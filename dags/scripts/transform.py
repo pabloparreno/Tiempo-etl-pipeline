@@ -1,37 +1,33 @@
 import pandas as pd
+from datetime import datetime, timezone
 
 def transform_weather_data(raw_data):
 
-    # Validación básica
-    if not raw_data:
-        raise ValueError("❌ No hay datos para transformar")
+    if not raw_data or not isinstance(raw_data, dict):
+        return None
 
-    transformed = {
-        "city": raw_data.get("name"),
-        "temp": raw_data["main"]["temp"],
-        "feels_like": raw_data["main"]["feels_like"],
-        "humidity": raw_data["main"]["humidity"],
-        "weather_main": raw_data["weather"][0]["main"],
-        "timestamp": raw_data["dt"]
-    }
+    main = raw_data.get("main") or {}
+    weather = (raw_data.get("weather") or [{}])[0]
+    sys = raw_data.get("sys") or {}
 
-    df = pd.DataFrame([transformed])
+    city = raw_data.get("name")
 
-    return df
+    dt_raw = raw_data.get("dt")
 
+    weather_datetime = (
+        datetime.fromtimestamp(dt_raw, tz=timezone.utc)
+        if isinstance(dt_raw, (int, float))
+        else None
+    )
 
-# Test local
-if __name__ == "__main__":
-    sample = {
-        "name": "Madrid",
-        "main": {
-            "temp": 20,
-            "feels_like": 19,
-            "humidity": 60
-        },
-        "weather": [{"main": "Clouds"}],
-        "dt": 123456789
-    }
-
-    df = transform_weather_data(sample)
-    print(df)
+    return pd.DataFrame([{
+        "city": city,
+        "country": sys.get("country"),
+        "temp": main.get("temp"),
+        "feels_like": main.get("feels_like"),
+        "humidity": main.get("humidity"),
+        "pressure": main.get("pressure"),
+        "weather_main": weather.get("main"),
+        "weather_description": weather.get("description"),
+        "ingestion_datetime": datetime.now(timezone.utc)
+    }])

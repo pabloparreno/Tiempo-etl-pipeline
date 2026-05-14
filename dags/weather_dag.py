@@ -2,13 +2,13 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime, timedelta
 
-from scripts.main import run_pipeline
+from scripts.main import run_pipeline   # 👈 ESTO ES OBLIGATORIO
 
 import sys
 import os
 
 default_args = {
-    "owner": "jose",
+    "owner": "Pablo",
     "start_date": datetime(2024, 1, 1),
     "retries": 1,
     "retry_delay": timedelta(minutes=1),
