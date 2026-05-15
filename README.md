@@ -1,25 +1,30 @@
-PRUEBA TÉCNICA ALTEN
-La aplicación extrae datos de la API de OpenWeather, transforma los datos y los sube a Big Query. Todo orquestado con AirFlow.
+Descripción del proyecto:
 
-Para Desplegar la aplicación en local y su correcto funcionamiento. Se requiere instalar las dependencias del archivo requirements.txt.
-Para ello ejecutar el comando indicado en el Dockerfile
-
-Debemos crear un archivo .env y recrearlo según el archivo .env.example
-
-Se requiere iniciar sesión en https://openweathermap.org/ para generar la Api key necesaria de añadir en el archivo .env 
-
-Es necesario generar el archivo json de de credenciales de google cloud. Dentro de GCP debemos generar una service account y darle los permisos de escritura de Big query. Por último renombrar el archivo como credenciales.json y añadirlo a la carpeta config.
-
-Las credenciales para airflow serán usuario:admin contraseña:admin
+La aplicación extrae datos de la API de OpenWeather, transforma los datos y los sube a Big Query. Todo orquestado con AirFlow de manera local con Docker desktop
 
 Manual de usuario:
 
-Crear .env
-copy .env.example .env
-docker-compose up --build
-Añadir credenciales
+Se requiere iniciar sesión en https://openweathermap.org/ para generar la Api key necesaria de añadir en el archivo .env 
+
+Es necesario generar el archivo json de credenciales de google cloud. Para ello Dentro de GCP, en el desplegable de servios, dejamos el cursor en IAM y administración y accedemos a cuentas de servicio. Una vez ahí debemos crear una cuenta de servicio y darle los roles de administrador de Big query y editor de datos de Big query.
+
+Debemos Crear .env a la misma altura que .env.example
+
+En el archivo .env, añadir la Api Key generada anteriormente
+
+Ejecutar el comando: copy .env.example .env
+
+Crear una carpeta config y añadir las credenciales generadas en gcp por la service account. Debe quedar así:
 config/credenciales.json
+
+Abrir Docker desktop
+
 Ejecutar
 docker-compose up --build
-Airflow
+Puede ser que haya que actualizar wsl
+
+Acceder a localhost:
 http://localhost:8080
+Las credenciales para airflow serán usuario:admin contraseña:admin
+
+Una vez en la interfaz de Airflow, simplemente ejecutar la pipeline y comprobar que los datos se han insertado correctamente.
