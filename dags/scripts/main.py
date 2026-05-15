@@ -1,5 +1,5 @@
 from .extract import extract_all
-from .transform import transform_weather_data
+from .transform import transformar_datos_clima
 from .load_bq import load_to_bigquery
 
 import pandas as pd
@@ -17,13 +17,16 @@ def run_pipeline():
 
     for city_data in raw_data:
 
-        df = transform_weather_data(city_data["current"])
+        ciudad = city_data["current"]["name"]
 
-        # 🔒 FIX: evitar None o DataFrames vacíos
+        df = transformar_datos_clima(
+            city_data["current"],
+            ciudad_input=ciudad
+        )
+
         if df is not None and not df.empty:
             all_dataframes.append(df)
 
-    # 🔒 FIX: evitar crash si todo falla
     if not all_dataframes:
         raise ValueError("❌ No valid data to load into BigQuery")
 
@@ -34,7 +37,6 @@ def run_pipeline():
     load_to_bigquery(final_df)
 
     print("✅ Load done")
-
     print("🎉 Pipeline finished successfully")
 
 

@@ -3,14 +3,13 @@ import requests
 
 API_KEY = os.getenv("OPENWEATHER_API_KEY")
 
-# Lista de ciudades
 CITIES = os.getenv("CITIES", "").split(",")
 
 BASE_URL = "https://api.openweathermap.org/data/2.5"
 
 
 def extract_current_weather(city):
-    url = f"{BASE_URL}/weather?q={city}&appid={API_KEY}&units=metric"
+    url = f"{BASE_URL}/weather?q={city}&appid={API_KEY}&units=metric&lang=es"
     r = requests.get(url)
 
     if r.status_code != 200:
