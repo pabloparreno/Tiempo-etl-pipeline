@@ -6,13 +6,13 @@ Manual de usuario:
 
 Se requiere iniciar sesión en https://openweathermap.org/ para generar la Api key necesaria de añadir en el archivo .env 
 
-Es necesario generar el archivo json de credenciales de google cloud. Para ello Dentro de GCP, en el desplegable de servios, dejamos el cursor en IAM y administración y accedemos a cuentas de servicio. Una vez ahí debemos crear una cuenta de servicio y darle los roles de administrador de Big query y editor de datos de Big query.
+Crear .env a la misma altura que .env.example
 
-Debemos Crear .env a la misma altura que .env.example
+Ejecutar el comando: copy .env.example .env
 
 En el archivo .env, añadir la Api Key generada anteriormente
 
-Ejecutar el comando: copy .env.example .env
+Es necesario generar el archivo json de credenciales de google cloud. Para ello dentro de GCP, en el desplegable de servicios, dejamos el cursor en IAM y administración y accedemos a cuentas de servicio. Una vez ahí debemos crear una cuenta de servicio y darle los roles de administrador de Big query y editor de datos de Big query. Finalmente descargamos el json y lo renombramos a credenciales.json
 
 Crear una carpeta config y añadir las credenciales generadas en gcp por la service account. Debe quedar así:
 config/credenciales.json
